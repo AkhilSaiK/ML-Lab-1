@@ -4,14 +4,18 @@ class stats:
     def __init__(self,name):
         self.name=name
         self.Min=None
+
         self.Max=None
         self.Mean=None
         self.SD=None
     def Print(self):
         print(f"{self.name}: {self.Min},{self.Max},{self.Mean},{self.SD}")
 
-data =  pd.read_csv('iris.data', sep=",")
-print(data)
+column_names=['sepal_length','sepal_width','petal_length','petal_width','class']
+data =  pd.read_csv('iris.data', sep=",",names=column_names)
+# print(data)
+
+# Statistics
 SepalL=stats('Sepal Length')
 SepalL.Min=min(data.iloc[:,0])
 SepalL.Max=max(data.iloc[:,0])
@@ -39,3 +43,8 @@ PetalW.Max=max(data.iloc[:,3])
 PetalW.Mean = data.iloc[:,3].mean()
 PetalW.SD = data.iloc[:,3].std()
 PetalW.Print()
+
+#Class Correlation
+for iris_class in data['class'].unique():
+    correlation = data[data['class'] == iris_class][['sepal_length', 'petal_length']].corr().iloc[0, 1]
+    print(f'Class Correlation for {iris_class}: {correlation}')
